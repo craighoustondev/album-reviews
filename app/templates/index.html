@@ -1,8 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, {{ user.nickname }}!</h1>
-    {% for review in reviews %}
-    <div><p>{{ review.author.nickname }} says: <b>{{ review.body }}</b></p></div>
-    {% endfor %}
+  <h1>Hi, {{ g.user.nickname }}!</h1>
+  <form action="" method="post" name="review">
+      {{ form.hidden_tag() }}
+      <table>
+          <tr>
+              <td>Say something:</td>
+              <td>{{ form.review(size=30, maxlength=140) }}</td>
+              <td>
+              {% for error in form.review.errors %}
+              <span style="color: red;">[{{ error }}]</span><br>
+              {% endfor %}
+              </td>
+          </tr>
+          <tr>
+              <td></td>
+              <td><input type="submit" value="review!"></td>
+              <td></td>
+          </tr>
+      </table>
+  </form>
+  {% for review in reviews.items %}
+  <p>
+    {% include 'review.html' %}
+  </p>
+  {% endfor %}
+  {% if reviews.has_prev %}<a href="{{ url_for('index', page=reviews.prev_num) }}">&lt;&lt; Newer reviews</a>{% else %}&lt;&lt; Newer reviews{% endif %} |
+  {% if reviews.has_next %}<a href="{{ url_for('index', page=reviews.next_num) }}">Older reviews &gt;&gt;</a>{% else %}Older reviews &gt;&gt;{% endif %}
 {% endblock %}

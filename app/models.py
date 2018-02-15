@@ -71,6 +71,7 @@ class User(db.Model):
 
     def followed_reviews(self):
         return Review.query.join(followers, (followers.c.followed_id == Review.user_id)).filter(followers.c.follower_id == self.id).order_by(Review.timestamp.desc())
+        # return Review.query.join(followers, (followers.c.followed_id == Review.user_id)).order_by(Review.timestamp.desc())
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
